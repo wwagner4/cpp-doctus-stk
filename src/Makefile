@@ -1,4 +1,4 @@
-CXXFLAGS =	-O2 -g -Wall -I../stk/include -D__OS_MACOSX__ -fmessage-length=0
+CXXFLAGS =	-O3 -g -Wall -I../stk/include -D__OS_MACOSX__ -fmessage-length=0
 
 LIBS =	../stk/lib/*
 
