@@ -2,7 +2,7 @@ CXXFLAGS =	-O3 -g -w -I../stk/include -D__OS_MACOSX__
 
 LIBS =	../stk/lib/*
 
-all: Tryout Parser
+all: Tryout
 
 clean: 
 	rm -f \
