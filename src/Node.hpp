@@ -4,19 +4,19 @@
 namespace dstk {
 
 enum ValueType {
-	frequency,
-	gain
+	frequency, gain
 };
 
 class Node {
 
 public:
-
 	virtual stk::StkFloat tick() = 0;
 	virtual void keyOn() = 0;
 	virtual void keyOff() = 0;
 	virtual void setValue(ValueType type, stk::StkFloat value) = 0;
-	virtual ~Node() {};
+	virtual ~Node() {
+	}
+	;
 
 };
 

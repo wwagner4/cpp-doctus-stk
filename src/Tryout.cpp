@@ -30,7 +30,7 @@ Node* createNode() {
 	std::vector<Node*> v;
 	StkFloat freq = rand() % 400 + 200;
 	StkFloat gain = 0.1;
-	for (int i=1; i <= 100; i++) {
+	for (int i = 1; i <= 100; i++) {
 		dstk::Node* n = createSine(freq, gain);
 		v.push_back(n);
 		gain *= 0.9;
