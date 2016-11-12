@@ -80,14 +80,13 @@ class NodeSequence: public Node {
 	std::vector<Node*> nodes;
 
 public:
-	NodeSequence() {
-		printf("NodeSequence\n");
+	NodeSequence(std::vector<Node*> nodes_) {
+		for (Node* n : nodes) delete n;
+		nodes = nodes_;
 	}
 	~NodeSequence() {
 		printf("~NodeSequence\n");
-		for (std::vector<Node*>::size_type i = 0; i != nodes.size(); i++) {
-			delete nodes[i];
-		}
+		for (Node* n : nodes) delete n;
 	}
 	stk::StkFloat tick() {
 		stk::StkFloat prod = 1.0;
@@ -104,10 +103,6 @@ public:
 		printf("keyOff\n");
 		// Nothing to do
 	}
-	void addNode(Node* node) {
-		printf("addNode\n");
-		nodes.push_back(node);
-	}
 	void setValue(ValueType type, stk::StkFloat value) {
 		printf("Could not set value for %d in NodeSequence\n", type);
 	}
@@ -120,14 +115,14 @@ class NodeSum: public Node {
 
 public:
 
-	NodeSum() {
+	NodeSum(std::vector<Node*> nodes_) {
 		printf("NodeSum\n");
+		for (Node* n : nodes) delete n;
+		nodes = nodes_;
 	}
 	~NodeSum() {
 		printf("~NodeSum\n");
-		for (std::vector<Node*>::size_type i = 0; i != nodes.size(); i++) {
-			delete nodes[i];
-		}
+		for (Node* n : nodes) delete n;
 	}
 	stk::StkFloat tick() {
 		stk::StkFloat sum = 0.0;
@@ -161,18 +156,10 @@ Node* NodeFactory::nodeGain(stk::StkFloat gain) {
 	return new NodeGain(gain);
 }
 Node* NodeFactory::nodeSequence(std::vector<Node*> nodes) {
-	NodeSequence* re = new NodeSequence();
-	for (Node* node : nodes) {
-		re->addNode(node);
-	}
-	return re;
+	return new NodeSequence(nodes);
 }
 Node* NodeFactory::nodeSum(std::vector<Node*> nodes) {
-	NodeSum* re = new NodeSum();
-	for (Node* node : nodes) {
-		re->addNode(node);
-	}
-	return re;
+	return new NodeSum(nodes);
 }
 
 }
