@@ -27,7 +27,6 @@ public:
 	Node* nodeGain(stk::StkFloat gain);
 	Node* nodeSequence(std::vector<Node*> nodes);
 	Node* nodeSum(std::vector<Node*> nodes);
-
 };
 
 }

@@ -46,7 +46,7 @@ int main() {
 	node->keyOn();
 	RtWvOut *dac = 0;
 	dac = new RtWvOut(2);
-	for (int f = 0; f < 200000; f++) {
+	for (int f = 0; f < 100000; f++) {
 		stk::StkFloat v = node->tick();
 		dac->tick(v);
 	}
