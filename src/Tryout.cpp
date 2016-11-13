@@ -11,17 +11,19 @@ using namespace dstk;
 
 NodeFactory f;
 
-Node* createSine(StkFloat frequency, StkFloat gain) {
-	Node* sine = f.nodeSine(frequency);
+int id = 0;
 
-	Node* gain_ = f.nodeGain(gain);
+Node* createSine(StkFloat frequency, StkFloat gain) {
+	Node* sine = f.nodeSine(id++, frequency);
+
+	Node* gain_ = f.nodeGain(id++, gain);
 
 	std::vector<Node*> v;
 
 	v.push_back(sine);
 	v.push_back(gain_);
 
-	Node* seq = f.nodeSequence(v);
+	Node* seq = f.nodeSequence(id++, v);
 
 	return seq;
 }
@@ -36,7 +38,7 @@ Node* createNode() {
 		gain *= 0.9;
 		freq *= 1.02;
 	}
-	return f.nodeSum(v);
+	return f.nodeSum(id++, v);
 }
 
 int main() {

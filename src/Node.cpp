@@ -4,13 +4,16 @@ namespace dstk {
 
 class NodeSine: public Node {
 
+private:
 	stk::SineWave sineWave;
+	int id;
 
 public:
 
-	NodeSine(stk::StkFloat frequency) {
+	NodeSine(int id, stk::StkFloat frequency) {
 		printf("NodeSine\n");
 		sineWave.setFrequency(frequency);
+		this->id = id;
 	}
 	~NodeSine() {
 		printf("~NodeSine\n");
@@ -36,20 +39,22 @@ public:
 			printf("Could not set value for %d in NodeGain\n", type);
 		}
 	}
+	int getId() {
+		return this->id;
+	}
 
 };
 
 class NodeGain: public Node {
 
+private:
+	int id;
 	stk::StkFloat gain_;
 
 public:
-	NodeGain(stk::StkFloat gain) {
+	NodeGain(int id, stk::StkFloat gain) {
 		gain_ = gain;
-		printf("NodeSine\n");
-	}
-	NodeGain() {
-		gain_ = 1.0;
+		this->id = id;
 		printf("NodeSine\n");
 	}
 	stk::StkFloat tick() {
@@ -72,15 +77,20 @@ public:
 			printf("Could not set value for %d in NodeGain\n", type);
 		}
 	}
+	int getId() {
+		return this->id;
+	}
 
 };
 
 class NodeSequence: public Node {
-
+private:
+	int id;
 	std::vector<Node*> nodes;
 
 public:
-	NodeSequence(std::vector<Node*> nodes_) {
+	NodeSequence(int id, std::vector<Node*> nodes_) {
+		this->id = id;
 		for (Node* n : nodes) delete n;
 		nodes = nodes_;
 	}
@@ -106,16 +116,22 @@ public:
 	void setValue(ValueType type, stk::StkFloat value) {
 		printf("Could not set value for %d in NodeSequence\n", type);
 	}
+	int getId() {
+		return this->id;
+	}
 
 };
 
 class NodeSum: public Node {
 
+private:
+	int id;
 	std::vector<Node*> nodes;
 
 public:
 
-	NodeSum(std::vector<Node*> nodes_) {
+	NodeSum(int id, std::vector<Node*> nodes_) {
+		this->id = id;
 		printf("NodeSum\n");
 		for (Node* n : nodes) delete n;
 		nodes = nodes_;
@@ -146,21 +162,34 @@ public:
 	void setValue(ValueType type, stk::StkFloat value) {
 		printf("Could not set value for %d in NodeSum\n", type);
 	}
+	int getId() {
+		return this->id;
+	}
 
 };
 
-Node* NodeFactory::nodeSine(stk::StkFloat frequency) {
-	return new NodeSine(frequency);
+Node* NodeFactory::nodeSine(int id, stk::StkFloat frequency) {
+	Node* re = new NodeSine(id, frequency);
+	this->nodeMap[id] = re;
+	return re;
 }
-Node* NodeFactory::nodeGain(stk::StkFloat gain) {
-	return new NodeGain(gain);
+Node* NodeFactory::nodeGain(int id, stk::StkFloat gain) {
+	Node* re = new NodeGain(id, gain);
+	this->nodeMap[id] = re;
+	return re;
 }
-Node* NodeFactory::nodeSequence(std::vector<Node*> nodes) {
-	return new NodeSequence(nodes);
+Node* NodeFactory::nodeSequence(int id, std::vector<Node*> nodes) {
+	Node* re = new NodeSequence(id, nodes);
+	this->nodeMap[id] = re;
+	return re;
 }
-Node* NodeFactory::nodeSum(std::vector<Node*> nodes) {
-	return new NodeSum(nodes);
+Node* NodeFactory::nodeSum(int id, std::vector<Node*> nodes) {
+	Node* re = new NodeSum(id, nodes);
+	this->nodeMap[id] = re;
+	return re;
 }
-
+Node* NodeFactory::findNode(int id) {
+	return this->nodeMap[id];
+}
 }
 
