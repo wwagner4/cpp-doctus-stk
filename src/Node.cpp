@@ -86,22 +86,24 @@ public:
 class NodeSequence: public Node {
 private:
 	int id;
-	std::vector<Node*> nodes;
+	std::list<Node*> nodes;
 
 public:
-	NodeSequence(int id, std::vector<Node*> nodes_) {
+	NodeSequence(int id, std::list<Node*> nodes_) {
 		this->id = id;
-		for (Node* n : nodes) delete n;
+		for (Node* n : nodes)
+			delete n;
 		nodes = nodes_;
 	}
 	~NodeSequence() {
 		printf("~NodeSequence\n");
-		for (Node* n : nodes) delete n;
+		for (Node* n : nodes)
+			delete n;
 	}
 	stk::StkFloat tick() {
 		stk::StkFloat prod = 1.0;
-		for (std::vector<Node*>::size_type i = 0; i != nodes.size(); i++) {
-			prod *= nodes[i]->tick();
+		for (Node* n : nodes) {
+			prod *= n->tick();
 		}
 		return prod;
 	}
@@ -126,24 +128,26 @@ class NodeSum: public Node {
 
 private:
 	int id;
-	std::vector<Node*> nodes;
+	std::list<Node*> nodes;
 
 public:
 
-	NodeSum(int id, std::vector<Node*> nodes_) {
+	NodeSum(int id, std::list<Node*> nodes_) {
 		this->id = id;
 		printf("NodeSum\n");
-		for (Node* n : nodes) delete n;
+		for (Node* n : nodes)
+			delete n;
 		nodes = nodes_;
 	}
 	~NodeSum() {
 		printf("~NodeSum\n");
-		for (Node* n : nodes) delete n;
+		for (Node* n : nodes)
+			delete n;
 	}
 	stk::StkFloat tick() {
 		stk::StkFloat sum = 0.0;
-		for (std::vector<Node*>::size_type i = 0; i != nodes.size(); i++) {
-			sum += nodes[i]->tick();
+		for (Node* n : nodes) {
+			sum += n->tick();
 		}
 		return sum;
 	}
@@ -178,12 +182,12 @@ Node* NodeFactory::nodeGain(int id, stk::StkFloat gain) {
 	this->nodeMap[id] = re;
 	return re;
 }
-Node* NodeFactory::nodeSequence(int id, std::vector<Node*> nodes) {
+Node* NodeFactory::nodeSequence(int id, std::list<Node*> nodes) {
 	Node* re = new NodeSequence(id, nodes);
 	this->nodeMap[id] = re;
 	return re;
 }
-Node* NodeFactory::nodeSum(int id, std::vector<Node*> nodes) {
+Node* NodeFactory::nodeSum(int id, std::list<Node*> nodes) {
 	Node* re = new NodeSum(id, nodes);
 	this->nodeMap[id] = re;
 	return re;

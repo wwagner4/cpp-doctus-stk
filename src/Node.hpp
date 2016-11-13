@@ -1,6 +1,7 @@
 #include "SineWave.h"
 #include "RtWvOut.h"
 #include <map>
+#include <list>
 
 namespace dstk {
 
@@ -32,8 +33,8 @@ private:
 public:
 	Node* nodeSine(int id, stk::StkFloat frequency);
 	Node* nodeGain(int id, stk::StkFloat gain);
-	Node* nodeSequence(int id, std::vector<Node*> nodes);
-	Node* nodeSum(int id, std::vector<Node*> nodes);
+	Node* nodeSequence(int id, std::list<Node*> nodes);
+	Node* nodeSum(int id, std::list<Node*> nodes);
 
 	Node* findNode(int id);
 

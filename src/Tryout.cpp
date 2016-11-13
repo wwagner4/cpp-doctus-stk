@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <vector>
+#include <list>
 #include <random>
 
 #include "Node.hpp"
@@ -18,7 +18,7 @@ Node* createSine(StkFloat frequency, StkFloat gain) {
 
 	Node* gain_ = f.nodeGain(id++, gain);
 
-	std::vector<Node*> v;
+	std::list<Node*> v;
 
 	v.push_back(sine);
 	v.push_back(gain_);
@@ -29,7 +29,7 @@ Node* createSine(StkFloat frequency, StkFloat gain) {
 }
 
 Node* createNode() {
-	std::vector<Node*> v;
+	std::list<Node*> v;
 	StkFloat freq = rand() % 400 + 200;
 	StkFloat gain = 0.1;
 	for (int i = 1; i <= 100; i++) {
