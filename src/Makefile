@@ -4,6 +4,9 @@ LIBS =	../stk/lib/*
 
 all: Tryout
 
+run: all
+	./Tryout
+
 clean: 
 	rm -f \
 	Tryout.o Tryout \
