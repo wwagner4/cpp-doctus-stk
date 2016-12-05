@@ -2,17 +2,17 @@ CXXFLAGS =	-O3 -g -w -I../stk/include -D__OS_MACOSX__
 
 LIBS =	../stk/lib/*
 
-all: Tryout
+all: Tryout DoctusStkJni.class
 
 run: all
-	./Tryout
+	java DoctusStkJni
 
 clean: 
 	rm -f \
-	Tryout.o Tryout \
-	Parser.o Parser \
-    Node.o 
-
+		Tryout \
+		*.class \
+		*.o \
+		
 Tryout:	Tryout.o Node.o
 	$(CXX) -o Tryout Tryout.o Node.o $(LIBS)
 
@@ -21,3 +21,6 @@ Parser:	Parser.o
 
 Node: Node.o
 	$(CXX) -o Node Node.o $(LIBS)
+
+DoctusStkJni.class: DoctusStkJni.java
+	javac DoctusStkJni.java
