@@ -3,3 +3,7 @@ all:
 
 clean:
 	cd src && make clean
+
+run:
+	cd src && make run
+

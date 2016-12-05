@@ -1,0 +1,34 @@
+###Links:
+
+##Parsergenerator:
+
+https://ds9a.nl/lex-yacc/cvs/lex-yacc-howto.html
+
+https://www.usna.edu/Users/cs/lmcdowel/courses/si413/F10/labs/L04/calc1/ex1.html
+
+Die beiden sollten OK sein:
+https://github.com/bingmann/flex-bison-cpp-example
+https://github.com/ezaquarii/bison-flex-cpp-example
+ 
+Bison Doku:
+http://www.gnu.org/software/bison/manual/html_node/C_002b_002b-Parsers.html#C_002b_002b-Parsers
+ 
+Template:
+http://panthema.net/2007/flex-bison-cpp-example/
+https://github.com/jimmahoney/bison_calculator
+ 
+ 
+Blog
+http://www.jonathanbeard.io/tutorials/FlexBisonC++
+https://github.com/jonathan-beard/simple_wc_example
+ 
+ 
+Reentrant Parsers
+http://benlynn.blogspot.co.at/2013/12/reentrant-parsers-with-flex-and-bison.html
+
+##JNI
+https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html
+
+
+## Sound engines
+http://attr-x.net/yse/

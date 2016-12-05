@@ -1,5 +1,4 @@
-*.o
-src/Tryout
 /.settings/
 /.cproject
 /.project
+/.DS_Store
