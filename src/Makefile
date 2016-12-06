@@ -11,11 +11,8 @@ run: all
 	java DoctusStkJni
 
 clean: 
-	rm -f Tryout *.class *.o DoctusStkJni.h *.jnilib 
+	rm -f *.class *.o DoctusStkJni.h *.jnilib 
 	rm -rf *.dSYM 
-
-Tryout:	Tryout.o Node.o
-	$(CXX) -o Tryout Tryout.o Node.o $(LIBS)
 
 Node: Node.o
 	$(CXX) -o Node Node.o $(LIBS)
