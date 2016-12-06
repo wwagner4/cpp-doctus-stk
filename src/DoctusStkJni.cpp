@@ -1,5 +1,5 @@
-#include <jni.h>
 #include "DoctusStkJni.h"
+#include "jni.h"
 
 #include <cstdio>
 #include <list>
