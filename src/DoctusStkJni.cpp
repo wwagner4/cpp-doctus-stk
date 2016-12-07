@@ -10,7 +10,7 @@
 #include "RtWvOut.h"
 
 using namespace stk;
-using namespace dstk;
+using namespace jstk;
 
 NodeFactory f;
 
@@ -36,7 +36,7 @@ Node* createNode() {
   StkFloat freq = rand() % 400 + 200;
   StkFloat gain = 0.1;
   for (int i = 1; i <= 100; i++) {
-    dstk::Node* n = createSine(freq, gain);
+    jstk::Node* n = createSine(freq, gain);
     v.push_back(n);
     gain *= 0.9;
     freq *= 1.02;
@@ -47,7 +47,7 @@ Node* createNode() {
 JNIEXPORT void JNICALL Java_DoctusStkJni_addNode(JNIEnv *, jobject) {
   Stk::showWarnings(true);
 
-  dstk::Node* node = createNode();
+  jstk::Node* node = createNode();
   node->keyOn();
   RtWvOut *dac = 0;
   dac = new RtWvOut(2);

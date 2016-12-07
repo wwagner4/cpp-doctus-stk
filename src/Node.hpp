@@ -3,7 +3,7 @@
 #include <map>
 #include <list>
 
-namespace dstk {
+namespace jstk {
 
 enum ValueType {
 	frequency, gain

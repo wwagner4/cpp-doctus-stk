@@ -1,6 +1,6 @@
 #include "Node.hpp"
 
-namespace dstk {
+namespace jstk {
 
 class NodeSine: public Node {
 
