@@ -17,7 +17,8 @@ clean:
 Node: Node.o
 	$(CXX) -o Node Node.o $(LIBS)
 
-JStk.class : JStk.java JStkNodeSine.class JStkNodeGain.class JStkNodeSequence.class
+JStk.class : JStk.java JStkNodeSine.class JStkNodeGain.class \
+             JStkNodeSequence.class JStkNodeSum.class
 	javac JStk.java
 	
 JStkNode.class: JStkNode.java
@@ -29,12 +30,14 @@ JStkContainer.class: JStkContainer.java
 JStkNodeSequence.class: JStkNodeSequence.java JStkNode.class JStkContainer.class
 	javac JStkNodeSequence.java
 
+JStkNodeSum.class: JStkNodeSum.java JStkNode.class JStkContainer.class
+	javac JStkNodeSum.java
+
 JStkNodeSine.class: JStkNodeSine.java JStkNode.class
 	javac JStkNodeSine.java
 
 JStkNodeGain.class: JStkNodeGain.java JStkNode.class
 	javac JStkNodeGain.java
-
 	
 JStk.h : JStk.class
 	javah -v -force JStk
