@@ -17,11 +17,17 @@ clean:
 Node: Node.o
 	$(CXX) -o Node Node.o $(LIBS)
 
-JStk.class : JStk.java JStkNodeSine.class JStkNodeGain.class
+JStk.class : JStk.java JStkNodeSine.class JStkNodeGain.class JStkNodeSequence.class
 	javac JStk.java
 	
 JStkNode.class: JStkNode.java
 	javac JStkNode.java
+
+JStkContainer.class: JStkContainer.java
+	javac JStkContainer.java
+
+JStkNodeSequence.class: JStkNodeSequence.java JStkNode.class JStkContainer.class
+	javac JStkNodeSequence.java
 
 JStkNodeSine.class: JStkNodeSine.java JStkNode.class
 	javac JStkNodeSine.java
