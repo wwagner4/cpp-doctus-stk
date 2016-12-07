@@ -1,6 +1,6 @@
 *.class
 *.o
 Tryout
-DoctusStkJni.h
-libDoctusStkJni.jnilib
+JStk.h
+*.jnilib
 

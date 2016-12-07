@@ -1,4 +1,4 @@
-#include "DoctusStkJni.h"
+#include "JStk.h"
 #include "jni.h"
 
 #include <cstdio>
@@ -44,7 +44,7 @@ Node* createNode() {
   return f.nodeSum(id++, v);
 }
 
-JNIEXPORT void JNICALL Java_DoctusStkJni_addNode(JNIEnv *, jobject) {
+JNIEXPORT void JNICALL Java_JStk_addNode(JNIEnv *, jobject) {
   Stk::showWarnings(true);
 
   jstk::Node* node = createNode();

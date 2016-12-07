@@ -5,26 +5,26 @@ CXXFLAGS =	-O3 -w -D__OS_MACOSX__\
 
 LIBS = ../stk/lib/*
 
-all: libDoctusStkJni.jnilib
+all: libJStk.jnilib
 
 run: all
-	java DoctusStkJni
+	java JStk
 
 clean: 
-	rm -f *.class *.o DoctusStkJni.h *.jnilib 
+	rm -f *.class *.o JStk.h *.jnilib 
 	rm -rf *.dSYM 
 
 Node: Node.o
 	$(CXX) -o Node Node.o $(LIBS)
 
-DoctusStkJni.class : DoctusStkJni.java
-	javac DoctusStkJni.java
+JStk.class : JStk.java
+	javac JStk.java
 	
-DoctusStkJni.h : DoctusStkJni.class
-	javah -jni DoctusStkJni
+JStk.h : JStk.class
+	javah -jni JStk
 
-libDoctusStkJni.jnilib: DoctusStkJni.h Node.o DoctusStkJni.cpp 
+libJStk.jnilib: JStk.h Node.o JStk.cpp 
 	$(CXX) $(CXXFLAGS) \
 	-dynamiclib -framework JavaVM \
-	-o libDoctusStkJni.jnilib DoctusStkJni.cpp Node.o $(LIBS)
+	-o libJStk.jnilib JStk.cpp Node.o $(LIBS)
 	
