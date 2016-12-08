@@ -44,8 +44,8 @@ Node* createNode() {
   return f.nodeSum(id++, v);
 }
 
-JNIEXPORT jint JNICALL Java_JStk_addGraph(JNIEnv *env, jobject,
-                                          jint graphId, jobject graph) {
+JNIEXPORT void JNICALL Java_JStk_addGraph
+    (JNIEnv *, jobject, jint graphId, jobject graph) {
   try {
     printf("C addGraph %d %p\n", graphId, graph);
     Stk::showWarnings(true);
@@ -61,9 +61,13 @@ JNIEXPORT jint JNICALL Java_JStk_addGraph(JNIEnv *env, jobject,
     node->keyOff();
     delete node;
     delete dac;
-    return 0;
   } catch (...) {
     printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph\n'");
-    return -1;
   }
 }
+
+JNIEXPORT void JNICALL Java_JStk_removeGraph
+  (JNIEnv *, jobject, jint graphId) {
+  printf("removeGraph %d\n", graphId);
+}
+
