@@ -44,8 +44,10 @@ Node* createNode() {
   return f.nodeSum(id++, v);
 }
 
-JNIEXPORT jint JNICALL Java_JStk_addGraph(JNIEnv *, jobject){
+JNIEXPORT jint JNICALL Java_JStk_addGraph(JNIEnv *env, jobject,
+                                          jint graphId, jobject graph) {
   try {
+    printf("C addGraph %d %p\n", graphId, graph);
     Stk::showWarnings(true);
 
     jstk::Node* node = createNode();

@@ -11,12 +11,12 @@ private:
 public:
 
   NodeSine(int id, stk::StkFloat frequency) {
-    printf("NodeSine\n");
+    //printf("NodeSine\n");
     sineWave.setFrequency(frequency);
     this->id = id;
   }
   ~NodeSine() {
-    printf("~NodeSine\n");
+    //printf("~NodeSine\n");
   }
   stk::StkFloat tick() {
     stk::StkFloat v = sineWave.tick();
@@ -55,7 +55,7 @@ public:
   NodeGain(int id, stk::StkFloat gain) {
     gain_ = gain;
     this->id = id;
-    printf("NodeSine\n");
+    //printf("NodeSine\n");
   }
   stk::StkFloat tick() {
     return gain_;
@@ -96,7 +96,7 @@ public:
     nodes = nodes_;
   }
   ~NodeSequence() {
-    printf("~NodeSequence\n");
+    //printf("~NodeSequence\n");
     for (Node* n : nodes)
       delete n;
   }
@@ -134,7 +134,7 @@ public:
 
   NodeSum(int id, std::list<Node*> nodes_) {
     this->id = id;
-    printf("NodeSum\n");
+    //printf("NodeSum\n");
     for (Node* n : nodes)
       delete n;
     nodes = nodes_;
