@@ -81,7 +81,7 @@ void addToGraphs(int id, Graph* graph) {
     sprintf(msg, "ERROR: A graph with id %d already exists", id);
     throw std::domain_error(msg);
   } else {
-    printf("Added graph with id %d\n", id);
+    printf("C addToGraphs %d\n", id);
   }
 }
 
@@ -93,9 +93,9 @@ Graph* removeFromGraphs(int id) {
   it = graphs.find(id);
   if (it != graphs.end()) {
     graphs.erase(it);
+    printf("C removeFromGraphs %d\n", id);
     return it->second;
   } else {
-    printf("C removeFromGraphs E\n");
     char* msg;
     sprintf(msg, "No graph with id %d existed", id);
     throw std::domain_error(msg);
