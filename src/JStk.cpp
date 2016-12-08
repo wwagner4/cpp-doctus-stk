@@ -45,18 +45,23 @@ Node* createNode() {
 }
 
 JNIEXPORT jint JNICALL Java_JStk_addGraph(JNIEnv *, jobject){
-  Stk::showWarnings(true);
+  try {
+    Stk::showWarnings(true);
 
-  jstk::Node* node = createNode();
-  node->keyOn();
-  RtWvOut *dac = 0;
-  dac = new RtWvOut(2);
-  for (int f = 0; f < 100000; f++) {
-    stk::StkFloat v = node->tick();
-    dac->tick(v);
+    jstk::Node* node = createNode();
+    node->keyOn();
+    RtWvOut *dac = 0;
+    dac = new RtWvOut(2);
+    for (int f = 0; f < 100000; f++) {
+      stk::StkFloat v = node->tick();
+      dac->tick(v);
+    }
+    node->keyOff();
+    delete node;
+    delete dac;
+    return 0;
+  } catch (...) {
+    printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph\n'");
+    return -1;
   }
-  node->keyOff();
-  delete node;
-  delete dac;
-  return 0;
 }
