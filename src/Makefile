@@ -10,17 +10,20 @@ all: libJStk.jnilib
 run: all
 	java JStk
 
-clean: 
-	rm -f *.class *.o JStk.h *.jnilib 
-	rm -rf *.dSYM 
+clean:
+	rm -f *.class *.o JStk.h *.jnilib
+	rm -rf *.dSYM
 
 Node: Node.o
 	$(CXX) -o Node Node.o $(LIBS)
 
-JStk.class : JStk.java JStkNodeSine.class JStkNodeGain.class \
+JStk.class : JStk.java IJStk.class JStkNodeSine.class JStkNodeGain.class \
              JStkNodeSequence.class JStkNodeSum.class
 	javac JStk.java
-	
+
+IJStk.class : IJStk.java
+	javac IJStk.java;
+
 JStkNode.class: JStkNode.java
 	javac JStkNode.java
 
@@ -38,12 +41,12 @@ JStkNodeSine.class: JStkNodeSine.java JStkNode.class
 
 JStkNodeGain.class: JStkNodeGain.java JStkNode.class
 	javac JStkNodeGain.java
-	
+
 JStk.h : JStk.class
 	javah -v -force JStk
 
-libJStk.jnilib: JStk.h Node.o JStk.cpp 
+libJStk.jnilib: JStk.h Node.o JStk.cpp
 	$(CXX) $(CXXFLAGS) \
 	-dynamiclib -framework JavaVM \
 	-o libJStk.jnilib JStk.cpp Node.o $(LIBS)
-	
+

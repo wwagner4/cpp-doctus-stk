@@ -68,6 +68,6 @@ JNIEXPORT void JNICALL Java_JStk_addGraph
 
 JNIEXPORT void JNICALL Java_JStk_removeGraph
   (JNIEnv *, jobject, jint graphId) {
-  printf("removeGraph %d\n", graphId);
+  printf("C removeGraph %d\n", graphId);
 }
 
