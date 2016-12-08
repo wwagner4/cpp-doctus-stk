@@ -92,7 +92,7 @@ Graph* removeFromGraphs(int id) {
   std::map<int, Graph*>::iterator it;
   it = graphs.find(id);
   if (it != graphs.end()) {
-    graphs.erase (it);
+    graphs.erase(it);
     return it->second;
   } else {
     printf("C removeFromGraphs E\n");
@@ -115,8 +115,10 @@ JNIEXPORT void JNICALL Java_JStk_addGraph
     while(graph->running) {
       graph->tick();
     }
+  } catch(std::exception& e) {
+    printf("ERROR: %s in 'Java_JStk_addGraph'\n", e.what());
   } catch (...) {
-    printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph\n'");
+    printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph'\n");
   }
 }
 
@@ -127,8 +129,10 @@ JNIEXPORT void JNICALL Java_JStk_removeGraph
     Graph* graph = removeFromGraphs(graphId);
     graph->running = false;
     delete graph;
+  } catch(std::exception& e) {
+    printf("ERROR: %s in 'Java_JStk_removeGraph'\n'", e.what());
   } catch (...) {
-    printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph\n'");
+    printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph'\n");
   }
 
 
