@@ -32,16 +32,7 @@ Node* createSine(StkFloat frequency, StkFloat gain) {
 }
 
 Node* createNode() {
-  std::list<Node*> v;
-  StkFloat freq = rand() % 400 + 200;
-  StkFloat gain = 0.1;
-  for (int i = 1; i <= 100; i++) {
-    jstk::Node* n = createSine(freq, gain);
-    v.push_back(n);
-    gain *= 0.9;
-    freq *= 1.02;
-  }
-  return f.nodeSum(id++, v);
+  return createSine(500, 1.0);
 }
 
 JNIEXPORT void JNICALL Java_JStk_addGraph
