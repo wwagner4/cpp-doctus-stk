@@ -17,5 +17,9 @@ public class JStkNodeSum implements JStkNode, JStkContainer {
   public List<JStkNode> getChildren() {
     return this.children;
   }
-  
+
+  public int getNodeClassOrdinal() {
+	  return NodeClass.SUM.ordinal();
+  }
+
 }

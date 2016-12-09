@@ -9,4 +9,8 @@ public class JStkNodeSine implements JStkNode {
   public int getId() {
     return id;
   }
+
+  public int getNodeClassOrdinal() {
+	  return NodeClass.SINE.ordinal();
+  }
 }

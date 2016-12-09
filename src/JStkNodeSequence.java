@@ -18,4 +18,7 @@ public class JStkNodeSequence implements JStkNode, JStkContainer {
     return this.children;
   }
   
+  public int getNodeClassOrdinal() {
+	  return NodeClass.SEQUENCE.ordinal();
+  }
 }
