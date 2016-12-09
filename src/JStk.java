@@ -38,8 +38,10 @@ public class JStk {
     JStkNode g = createTestGraph();
     System.out.println("J addGraph ->");
     jStk.addGraph(0, g);
-    jStk.setValue(0, 0, ValueType.FREQUENCY.ordinal(), 333);
     System.out.println("J addGraph <- ");
+    System.out.println("J setValue -> ");
+    jStk.setValue(0, 0, ValueType.FREQUENCY.ordinal(), 333);
+    System.out.println("J setValue <- ");
     pause(500);
     System.out.println("J removeGraph -> ");
     jStk.removeGraph(0);
