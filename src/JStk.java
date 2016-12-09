@@ -8,6 +8,7 @@ public class JStk {
 
   public native void addGraph(int graphId, JStkNode graph);
   public native void removeGraph(int graphId);
+  public native void setValue(int graphId, int nodeId, int typeOrdinal, double value);
 
   /**
    * creates an object for executing the native calls
@@ -23,6 +24,9 @@ public class JStk {
       public void removeGraph(int graphId) {
         pool.execute(() -> jStk.removeGraph(graphId));
       }
+      public void setValue(int graphId, int nodeId, int typeOrdinal, double value) {
+          pool.execute(() -> jStk.setValue(graphId, nodeId, typeOrdinal, value));
+      }
       public void shutdown() {
         pool.shutdown();
       }
@@ -34,8 +38,9 @@ public class JStk {
     JStkNode g = createTestGraph();
     System.out.println("J addGraph ->");
     jStk.addGraph(0, g);
+    jStk.setValue(0, 0, ValueType.FREQUENCY.ordinal(), 333);
     System.out.println("J addGraph <- ");
-    pause(1500);
+    pause(500);
     System.out.println("J removeGraph -> ");
     jStk.removeGraph(0);
     System.out.println("J removeGraph <- ");

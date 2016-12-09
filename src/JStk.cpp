@@ -134,7 +134,9 @@ JNIEXPORT void JNICALL Java_JStk_removeGraph
   } catch (...) {
     printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph'\n");
   }
-
-
+}
+JNIEXPORT void JNICALL Java_JStk_setValue
+  (JNIEnv* env, jobject thisObj, jint graphId, jint nodeId, jint typeOrdinal, jdouble value) {
+  printf("C Java_JStk_setValue %d %d %d %f\n", graphId, nodeId, typeOrdinal, value);
 }
 
