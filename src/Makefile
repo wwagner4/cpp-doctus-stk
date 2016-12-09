@@ -18,7 +18,8 @@ Node: Node.o
 	$(CXX) -o Node Node.o $(LIBS)
 
 JStk.class : JStk.java IJStk.class JStkNodeSine.class JStkNodeGain.class \
-             JStkNodeSequence.class JStkNodeSum.class ValueType.class
+             JStkNodeSequence.class JStkNodeSum.class ValueType.class \
+             NodeClass.class
 	javac JStk.java
 
 IJStk.class : IJStk.java
@@ -29,6 +30,9 @@ JStkNode.class: JStkNode.java
 
 ValueType.class: ValueType.java
 	javac ValueType.java
+
+NodeClass.class: NodeClass.java
+	javac NodeClass.java
 
 JStkContainer.class: JStkContainer.java
 	javac JStkContainer.java
