@@ -24,8 +24,8 @@ public class JStk {
       public void removeGraph(int graphId) {
         pool.execute(() -> jStk.removeGraph(graphId));
       }
-      public void setValue(int graphId, int nodeId, int typeOrdinal, double value) {
-          pool.execute(() -> jStk.setValue(graphId, nodeId, typeOrdinal, value));
+      public void setValue(int graphId, int nodeId, int valueTypeOrdinal, double value) {
+          pool.execute(() -> jStk.setValue(graphId, nodeId, valueTypeOrdinal, value));
       }
       public void shutdown() {
         pool.shutdown();

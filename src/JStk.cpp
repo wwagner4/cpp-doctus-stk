@@ -136,7 +136,7 @@ JNIEXPORT void JNICALL Java_JStk_removeGraph
   }
 }
 JNIEXPORT void JNICALL Java_JStk_setValue
-  (JNIEnv* env, jobject thisObj, jint graphId, jint nodeId, jint typeOrdinal, jdouble value) {
-  printf("C Java_JStk_setValue %d %d %d %f\n", graphId, nodeId, typeOrdinal, value);
+  (JNIEnv* env, jobject thisObj, jint graphId, jint nodeId, jint valueTypeOrdinal, jdouble value) {
+  printf("C Java_JStk_setValue %d %d %d %f\n", graphId, nodeId, valueTypeOrdinal, value);
 }
 
