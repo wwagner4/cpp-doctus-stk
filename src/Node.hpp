@@ -3,6 +3,10 @@
 #include <map>
 #include <list>
 
+#ifndef _Included_Node
+#define _Included_Node
+
+
 namespace jstk {
 
 enum ValueType {
@@ -37,8 +41,7 @@ public:
 	Node* nodeSum(int id, std::list<Node*> nodes);
 
 	Node* findNode(int id);
-
 };
-
-
 }
+#endif
+
