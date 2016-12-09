@@ -6,12 +6,10 @@
 #ifndef _Included_Node
 #define _Included_Node
 
+#define VALUE_TYPE_FREQUENCY 0
+#define VALUE_TYPE_GAIN 1
 
 namespace jstk {
-
-enum ValueType {
-	frequency, gain
-};
 
 class Node {
 
@@ -19,11 +17,10 @@ public:
 	virtual stk::StkFloat tick() = 0;
 	virtual void keyOn() = 0;
 	virtual void keyOff() = 0;
-	virtual void setValue(ValueType type, stk::StkFloat value) = 0;
+	virtual void setValue(int valueType, stk::StkFloat value) = 0;
 	virtual int getId() = 0;
-	virtual ~Node() {
-	}
-	;
+	virtual ~Node() {};
+
 private:
 	int id;
 

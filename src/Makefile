@@ -7,6 +7,9 @@ LIBS = ../stk/lib/*
 
 all: libJStk.jnilib
 
+gen: CodeGen.class
+	java CodeGen
+
 run: all
 	java JStk
 

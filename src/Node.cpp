@@ -30,13 +30,13 @@ public:
     printf("keyOff\n");
     // Nothing to do
   }
-  void setValue(ValueType type, stk::StkFloat value) {
-    switch (type) {
-    case frequency:
+  void setValue(int valueType, stk::StkFloat value) {
+    switch (valueType) {
+    case VALUE_TYPE_FREQUENCY:
       sineWave.setFrequency(value);
       break;
     default:
-      printf("Could not set value for %d in NodeGain\n", type);
+      printf("Could not set value for %d in NodeGain\n", valueType);
     }
   }
   int getId() {
@@ -68,13 +68,13 @@ public:
     printf("keyOff\n");
     // Nothing to do
   }
-  void setValue(ValueType type, stk::StkFloat value) {
-    switch (type) {
-    case gain:
+  void setValue(int valueType, stk::StkFloat value) {
+    switch (valueType) {
+    case VALUE_TYPE_GAIN:
       gain_ = value;
       break;
     default:
-      printf("Could not set value for %d in NodeGain\n", type);
+      printf("Could not set value for %d in NodeGain\n", valueType);
     }
   }
   int getId() {
@@ -115,8 +115,8 @@ public:
     printf("keyOff\n");
     // Nothing to do
   }
-  void setValue(ValueType type, stk::StkFloat value) {
-    printf("Could not set value for %d in NodeSequence\n", type);
+  void setValue(int valueType, stk::StkFloat value) {
+    printf("Could not set value for %d in NodeSequence\n", valueType);
   }
   int getId() {
     return this->id;
@@ -163,8 +163,8 @@ public:
     printf("addNode\n");
     nodes.push_back(node);
   }
-  void setValue(ValueType type, stk::StkFloat value) {
-    printf("Could not set value for %d in NodeSum\n", type);
+  void setValue(int valueType, stk::StkFloat value) {
+    printf("Could not set value for %d in NodeSum\n", valueType);
   }
   int getId() {
     return this->id;
