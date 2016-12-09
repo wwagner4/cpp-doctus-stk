@@ -14,9 +14,6 @@ clean:
 	rm -f *.class *.o JStk.h *.jnilib
 	rm -rf *.dSYM
 
-Node: Node.o
-	$(CXX) -o Node Node.o $(LIBS)
-
 JStk.class : JStk.java IJStk.class JStkNodeSine.class JStkNodeGain.class \
              JStkNodeSequence.class JStkNodeSum.class ValueType.class \
              NodeClass.class
