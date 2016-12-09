@@ -23,14 +23,14 @@ namespace jstk {
     return seq;
   }
 
-  Node* createNode(NodeFactory* factory) {
+  Node* createNode1(NodeFactory* factory) {
     return createSine(500, 1.0, factory);
   }
 
 
-  Node* NodeConverter::convert(JNIEnv* env ,jobject jnode, NodeFactory* nodeFactory) {
+  Node* NodeConverter::createNode(JNIEnv* env ,jobject jnode, NodeFactory* nodeFactory) {
     printf("C NodeConverter::convert %p %p\n", env, jnode);
-    return createNode(nodeFactory);
+    return createNode1(nodeFactory);
   }
 
 }

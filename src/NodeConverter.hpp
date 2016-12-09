@@ -14,7 +14,7 @@ namespace jstk {
   class NodeConverter {
 
   public:
-    Node* convert(JNIEnv* env ,jobject jgraph, NodeFactory* nodeFactory);
+    Node* createNode(JNIEnv* env ,jobject jgraph, NodeFactory* nodeFactory);
 
   };
 

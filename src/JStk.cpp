@@ -88,7 +88,7 @@ JNIEXPORT void JNICALL Java_JStk_addGraph
     printf("C addGraph %d %p\n", graphId, jgraph);
     Stk::showWarnings(true);
 
-    Node* node = conv.convert(env, jgraph, &factory);
+    Node* node = conv.createNode(env, jgraph, &factory);
     Graph* graph = new Graph(graphId, node);
     addToGraphs(graphId, graph);
 
