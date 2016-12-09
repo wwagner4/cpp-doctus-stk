@@ -11,34 +11,34 @@
 
 namespace jstk {
 
-class Node {
+  class Node {
 
-public:
-	virtual stk::StkFloat tick() = 0;
-	virtual void keyOn() = 0;
-	virtual void keyOff() = 0;
-	virtual void setValue(int valueType, stk::StkFloat value) = 0;
-	virtual int getId() = 0;
-	virtual ~Node() {};
+  public:
+    virtual stk::StkFloat tick() = 0;
+    virtual void keyOn() = 0;
+    virtual void keyOff() = 0;
+    virtual void setValue(int valueType, stk::StkFloat value) = 0;
+    virtual int getId() = 0;
+    virtual ~Node() {};
 
-private:
-	int id;
+  private:
+    int id;
 
-};
+  };
 
-class NodeFactory {
+  class NodeFactory {
 
-private:
-	std::map<int, Node*> nodeMap;
+  private:
+    std::map<int, Node*> nodeMap;
 
-public:
-	Node* nodeSine(int id, stk::StkFloat frequency);
-	Node* nodeGain(int id, stk::StkFloat gain);
-	Node* nodeSequence(int id, std::list<Node*> nodes);
-	Node* nodeSum(int id, std::list<Node*> nodes);
+  public:
+    Node* nodeSine(int id, stk::StkFloat frequency);
+    Node* nodeGain(int id, stk::StkFloat gain);
+    Node* nodeSequence(int id, std::list<Node*> nodes);
+    Node* nodeSum(int id, std::list<Node*> nodes);
 
-	Node* findNode(int id);
-};
+    Node* findNode(int id);
+  };
 }
 #endif
 

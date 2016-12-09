@@ -52,8 +52,8 @@ JStkNodeGain.class: JStkNodeGain.java JStkNode.class
 JStk.h : JStk.class
 	javah -v -force JStk
 
-libJStk.jnilib: JStk.h Node.o JStk.cpp
+libJStk.jnilib: JStk.h Node.o NodeConverter.o JStk.cpp
 	$(CXX) $(CXXFLAGS) \
 	-dynamiclib -framework JavaVM \
-	-o libJStk.jnilib JStk.cpp Node.o $(LIBS)
+	-o libJStk.jnilib JStk.cpp Node.o NodeConverter.o $(LIBS)
 

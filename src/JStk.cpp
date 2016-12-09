@@ -7,6 +7,7 @@
 #include <random>
 
 #include "Node.hpp"
+#include "NodeConverter.hpp"
 #include "SineWave.h"
 #include "RtWvOut.h"
 
@@ -44,30 +45,9 @@ class Graph {
     }
 };
 
-NodeFactory f;
-
-int id = 0;
-
+NodeFactory factory;
+NodeConverter conv;
 std::map<int, Graph*> graphs;
-
-Node* createSine(StkFloat frequency, StkFloat gain) {
-  Node* sine = f.nodeSine(id++, frequency);
-
-  Node* gain_ = f.nodeGain(id++, gain);
-
-  std::list<Node*> v;
-
-  v.push_back(sine);
-  v.push_back(gain_);
-
-  Node* seq = f.nodeSequence(id++, v);
-
-  return seq;
-}
-
-Node* createNode() {
-  return createSine(500, 1.0);
-}
 
 /**
  * Utillity function for accessing 'map'
@@ -103,12 +83,12 @@ Graph* removeFromGraphs(int id) {
 }
 
 JNIEXPORT void JNICALL Java_JStk_addGraph
-    (JNIEnv *, jobject, jint graphId, jobject jgraph) {
+    (JNIEnv* env , jobject, jint graphId, jobject jgraph) {
   try {
     printf("C addGraph %d %p\n", graphId, jgraph);
     Stk::showWarnings(true);
 
-    Node* node = createNode();
+    Node* node = conv.convert(env, jgraph, &factory);
     Graph* graph = new Graph(graphId, node);
     addToGraphs(graphId, graph);
 
