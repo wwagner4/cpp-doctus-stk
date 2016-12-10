@@ -50,7 +50,7 @@ public class JStk {
   }
 
   static JStkNode createTestGraph() {
-    JStkNodeSine n = new JStkNodeSine(0);
+    JStkNodeSine n = new JStkNodeSine(101, 1500);
     return n;
   }
 

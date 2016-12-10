@@ -23,14 +23,35 @@ namespace jstk {
     return seq;
   }
 
-  Node* createNode1(NodeFactory* factory) {
-    return createSine(500, 1.0, factory);
+  Node* createNodeSine(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory) {
+    jmethodID idMid = env->GetMethodID(clazz, "getId", "()I");
+    jint nodeId = env->CallIntMethod(jnode, idMid);
+    printf("C NC createNodeSin nodeId %d\n", nodeId);
+    StkFloat frequency = 800;
+    return factory->nodeSine(nodeId, frequency);;
   }
 
 
   Node* NodeConverter::createNode(JNIEnv* env ,jobject jnode, NodeFactory* nodeFactory) {
-    printf("C NodeConverter::convert %p %p\n", env, jnode);
-    return createNode1(nodeFactory);
+    printf("C NC NodeConverter::createNode %p %p\n", env, jnode);
+    jclass clazz = env->GetObjectClass(jnode);
+    jmethodID mid = env->GetMethodID(clazz, "getNodeClassOrdinal", "()I");
+    jint nodeClassOrd = env->CallIntMethod(jnode, mid);
+    printf("C NC NodeConverter::createNode nodeClassOrd %d\n", nodeClassOrd);
+    switch (nodeClassOrd) {
+      case NODE_CLASS_SINE:
+        return createNodeSine(env, jnode, clazz, nodeFactory);
+      case NODE_CLASS_GAIN:
+        throw std::domain_error("NOT YET IMPLEMENTED");
+      case NODE_CLASS_SEQUENCE:
+        throw std::domain_error("NOT YET IMPLEMENTED");
+      case NODE_CLASS_SUM:
+        throw std::domain_error("NOT YET IMPLEMENTED");
+      default:
+        char* msg;
+        sprintf(msg, "Undefined node class ordinal %d", nodeClassOrd);
+        throw std::domain_error(msg);
+    }
   }
 
 }
