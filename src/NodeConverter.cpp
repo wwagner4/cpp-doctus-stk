@@ -45,7 +45,27 @@ namespace jstk {
       v.push_back(n);
     }  
     return factory->nodeSequence(nodeId, v);
+  }
 
+  Node* NodeConverter::createNodeSum(JNIEnv* env ,jobject nodeObj, jclass nodeClass, NodeFactory* factory) {
+    jmethodID idMid = env->GetMethodID(nodeClass, "getId", "()I");
+    jint nodeId = env->CallIntMethod(nodeObj, idMid);
+
+    jmethodID getChildrenMid = env->GetMethodID(nodeClass, "getChildren", "()Ljava/util/List;");
+    jobject lObj = env->CallObjectMethod(nodeObj, getChildrenMid);
+    jclass lClass = env->GetObjectClass(lObj);
+
+    jmethodID sizeMid = env->GetMethodID(lClass, "size", "()I");
+    jmethodID getMid = env->GetMethodID(lClass, "get", "(I)Ljava/lang/Object;");
+
+    jint size = env->CallIntMethod(lObj, sizeMid);
+    std::list<Node*> v;
+    for (int i=0; i<size; i++) {
+      jobject eObj = env->CallObjectMethod(lObj, getMid, i);
+      Node* n = this->createNode(env, eObj, factory);
+      v.push_back(n);
+    }  
+    return factory->nodeSum(nodeId, v);
   }
 
   Node* NodeConverter::createNode(JNIEnv* env ,jobject nodeObj, NodeFactory* factory) {
@@ -60,7 +80,7 @@ namespace jstk {
       case NODE_CLASS_SEQUENCE:
         return this->createNodeSequence(env, nodeObj, nodeClass, factory);
       case NODE_CLASS_SUM:
-        throw std::domain_error("NodeConverter::createNode - NODE_CLASS_SUM - NOT YET IMPLEMENTED ");
+        return this->createNodeSum(env, nodeObj, nodeClass, factory);
       default:
         char* msg;
         sprintf(msg, "Undefined node class ordinal %d", nodeClassOrd);

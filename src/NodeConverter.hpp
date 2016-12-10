@@ -18,6 +18,7 @@ namespace jstk {
     Node* createNodeSine(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
     Node* createNodeGain(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
     Node* createNodeSequence(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
+    Node* createNodeSum(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
 
   };
 
