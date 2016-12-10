@@ -6,34 +6,56 @@ using namespace stk;
 
 namespace jstk {
 
-  int id = 0;
-
-  Node* createSine(StkFloat frequency, StkFloat gain, NodeFactory* f) {
-    Node* sine = f->nodeSine(id++, frequency);
-
-    Node* gain_ = f->nodeGain(id++, gain);
-
-    std::list<Node*> v;
-
-    v.push_back(sine);
-    v.push_back(gain_);
-
-    Node* seq = f->nodeSequence(id++, v);
-
-    return seq;
-  }
-
-  Node* createNodeSine(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory) {
+  Node* NodeConverter::createNodeSine(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory) {
     jmethodID idMid = env->GetMethodID(clazz, "getId", "()I");
     jint nodeId = env->CallIntMethod(jnode, idMid);
-    printf("C NC createNodeSin nodeId %d\n", nodeId);
+    printf("C NC NodeConverter::createNodeSin nodeId %d\n", nodeId);
 
     jmethodID freqMid = env->GetMethodID(clazz, "getFrequency", "()D");
-    printf("C NC createNodeSin freqMid %d\n", freqMid);
     jdouble frequency = env->CallDoubleMethod(jnode, freqMid);
-    printf("C NC createNodeSin frequency %f\n", frequency);
+    printf("C NC NodeConverter::createNodeSin frequency %f\n", frequency);
 
-    return factory->nodeSine(nodeId, frequency);;
+    return factory->nodeSine(nodeId, frequency);
+  }
+
+  Node* NodeConverter::createNodeGain(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory) {
+    jmethodID idMid = env->GetMethodID(clazz, "getId", "()I");
+    jint nodeId = env->CallIntMethod(jnode, idMid);
+    printf("C NC NodeConverter::createNodeGain nodeId %d\n", nodeId);
+
+    jmethodID gainMid = env->GetMethodID(clazz, "getGain", "()D");
+    jdouble gain = env->CallDoubleMethod(jnode, gainMid);
+    printf("C NC NodeConverter::createNodeGain gain %f\n", gain);
+
+    return factory->nodeGain(nodeId, gain);
+  }
+
+  Node* NodeConverter::createNodeSequence(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory) {
+    jmethodID idMid = env->GetMethodID(clazz, "getId", "()I");
+    jint nodeId = env->CallIntMethod(jnode, idMid);
+    printf("C NC NodeConverter::createNodeSeq nodeId %d\n", nodeId);
+
+    jmethodID getChildrenMid = env->GetMethodID(clazz, "getChildren", "()Ljava/util/List;");
+    printf("C NC NodeConverter::createNodeSeq getChildrenMid %d\n", getChildrenMid);
+    jobject lObj = env->CallObjectMethod(jnode, getChildrenMid);
+    printf("C NC NodeConverter::createNodeSeq lObj %p\n", lObj);
+    jclass clazz1 = env->GetObjectClass(lObj);
+
+    jmethodID sizeMid = env->GetMethodID(clazz1, "size", "()I");
+    printf("C NC NodeConverter::createNodeSeq sizeMid %d\n", sizeMid);
+    jmethodID getMid = env->GetMethodID(clazz1, "get", "(I)Ljava/lang/Object;");
+    printf("C NC NodeConverter::createNodeSeq getMid %d\n", getMid);
+
+    jint size = env->CallIntMethod(lObj, sizeMid);
+    std::list<Node*> v;
+    for (int i=0; i<size; i++) {
+      jobject dObj = env->CallObjectMethod(lObj, getMid, i);
+      printf("C NC NodeConverter::createNodeSeq dobj %p\n", dObj);
+      Node* n = this->createNode(env, dObj, factory);
+      v.push_back(n);
+    }  
+    return factory->nodeSequence(nodeId, v);
+
   }
 
 
@@ -45,13 +67,13 @@ namespace jstk {
     printf("C NC NodeConverter::createNode nodeClassOrd %d\n", nodeClassOrd);
     switch (nodeClassOrd) {
       case NODE_CLASS_SINE:
-        return createNodeSine(env, jnode, clazz, nodeFactory);
+        return this->createNodeSine(env, jnode, clazz, nodeFactory);
       case NODE_CLASS_GAIN:
-        throw std::domain_error("NOT YET IMPLEMENTED");
+        return this->createNodeGain(env, jnode, clazz, nodeFactory);
       case NODE_CLASS_SEQUENCE:
-        throw std::domain_error("NOT YET IMPLEMENTED");
+        return this->createNodeSequence(env, jnode, clazz, nodeFactory);
       case NODE_CLASS_SUM:
-        throw std::domain_error("NOT YET IMPLEMENTED");
+        throw std::domain_error("NodeConverter::createNode - NODE_CLASS_SUM - NOT YET IMPLEMENTED ");
       default:
         char* msg;
         sprintf(msg, "Undefined node class ordinal %d", nodeClassOrd);

@@ -13,7 +13,6 @@ public class JStkNodeSine implements JStkNode {
 	}
 
 	public double getFrequency() {
-		System.out.println("J getFrequency " + this.frequency);
 		return this.frequency;
 	}
 

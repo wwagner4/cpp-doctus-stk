@@ -15,6 +15,9 @@ namespace jstk {
 
   public:
     Node* createNode(JNIEnv* env ,jobject jgraph, NodeFactory* nodeFactory);
+    Node* createNodeSine(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
+    Node* createNodeGain(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
+    Node* createNodeSequence(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
 
   };
 
