@@ -97,8 +97,10 @@ JNIEXPORT void JNICALL Java_JStk_addGraph
     }
   } catch(std::exception& e) {
     printf("ERROR: %s in 'Java_JStk_addGraph'\n", e.what());
+    exit(-1);
   } catch (...) {
     printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph'\n");
+    exit(-2);
   }
 }
 
@@ -111,12 +113,22 @@ JNIEXPORT void JNICALL Java_JStk_removeGraph
     delete graph;
   } catch(std::exception& e) {
     printf("ERROR: %s in 'Java_JStk_removeGraph'\n'", e.what());
+    exit(-1);
   } catch (...) {
     printf("ERROR: An unknown exception occurred in 'Java_JStk_addGraph'\n");
+    exit(-2);
   }
 }
 JNIEXPORT void JNICALL Java_JStk_setValue
   (JNIEnv* env, jobject thisObj, jint graphId, jint nodeId, jint valueTypeOrdinal, jdouble value) {
-  printf("C Java_JStk_setValue %d %d %d %f\n", graphId, nodeId, valueTypeOrdinal, value);
+  try {
+    printf("C Java_JStk_setValue %d %d %d %f\n", graphId, nodeId, valueTypeOrdinal, value);
+  } catch(std::exception& e) {
+    printf("ERROR: %s in 'Java_JStk_setValue'\n'", e.what());
+    exit(-1);
+  } catch (...) {
+    printf("ERROR: An unknown exception occurred in 'Java_JStk_setValue'\n");
+    exit(-2);
+  }
 }
 
