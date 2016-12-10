@@ -27,7 +27,12 @@ namespace jstk {
     jmethodID idMid = env->GetMethodID(clazz, "getId", "()I");
     jint nodeId = env->CallIntMethod(jnode, idMid);
     printf("C NC createNodeSin nodeId %d\n", nodeId);
-    StkFloat frequency = 800;
+
+    jmethodID freqMid = env->GetMethodID(clazz, "getFrequency", "()D");
+    printf("C NC createNodeSin freqMid %d\n", freqMid);
+    jdouble frequency = env->CallDoubleMethod(jnode, freqMid);
+    printf("C NC createNodeSin frequency %f\n", frequency);
+
     return factory->nodeSine(nodeId, frequency);;
   }
 
