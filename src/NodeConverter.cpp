@@ -26,10 +26,7 @@ namespace jstk {
     return factory->nodeGain(nodeId, gain);
   }
 
-  Node* NodeConverter::createNodeSequence(JNIEnv* env ,jobject nodeObj, jclass nodeClass, NodeFactory* factory) {
-    jmethodID idMid = env->GetMethodID(nodeClass, "getId", "()I");
-    jint nodeId = env->CallIntMethod(nodeObj, idMid);
-
+  std::list<Node*>* NodeConverter::createChildren(JNIEnv* env ,jobject nodeObj, jclass nodeClass, NodeFactory* factory) {
     jmethodID getChildrenMid = env->GetMethodID(nodeClass, "getChildren", "()Ljava/util/List;");
     jobject lObj = env->CallObjectMethod(nodeObj, getChildrenMid);
     jclass lClass = env->GetObjectClass(lObj);
@@ -38,12 +35,20 @@ namespace jstk {
     jmethodID getMid = env->GetMethodID(lClass, "get", "(I)Ljava/lang/Object;");
 
     jint size = env->CallIntMethod(lObj, sizeMid);
-    std::list<Node*> v;
+    std::list<Node*>* v = new std::list<Node*>();
     for (int i=0; i<size; i++) {
       jobject eObj = env->CallObjectMethod(lObj, getMid, i);
       Node* n = this->createNode(env, eObj, factory);
-      v.push_back(n);
-    }  
+      v->push_back(n);
+    }
+    return v;
+  }
+
+  Node* NodeConverter::createNodeSequence(JNIEnv* env ,jobject nodeObj, jclass nodeClass, NodeFactory* factory) {
+    jmethodID idMid = env->GetMethodID(nodeClass, "getId", "()I");
+    jint nodeId = env->CallIntMethod(nodeObj, idMid);
+
+    std::list<Node*>* v = this->createChildren(env, nodeObj, nodeClass, factory);
     return factory->nodeSequence(nodeId, v);
   }
 
@@ -51,20 +56,7 @@ namespace jstk {
     jmethodID idMid = env->GetMethodID(nodeClass, "getId", "()I");
     jint nodeId = env->CallIntMethod(nodeObj, idMid);
 
-    jmethodID getChildrenMid = env->GetMethodID(nodeClass, "getChildren", "()Ljava/util/List;");
-    jobject lObj = env->CallObjectMethod(nodeObj, getChildrenMid);
-    jclass lClass = env->GetObjectClass(lObj);
-
-    jmethodID sizeMid = env->GetMethodID(lClass, "size", "()I");
-    jmethodID getMid = env->GetMethodID(lClass, "get", "(I)Ljava/lang/Object;");
-
-    jint size = env->CallIntMethod(lObj, sizeMid);
-    std::list<Node*> v;
-    for (int i=0; i<size; i++) {
-      jobject eObj = env->CallObjectMethod(lObj, getMid, i);
-      Node* n = this->createNode(env, eObj, factory);
-      v.push_back(n);
-    }  
+    std::list<Node*>* v = this->createChildren(env, nodeObj, nodeClass, factory);
     return factory->nodeSum(nodeId, v);
   }
 

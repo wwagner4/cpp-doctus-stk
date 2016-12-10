@@ -19,6 +19,7 @@ namespace jstk {
     Node* createNodeGain(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
     Node* createNodeSequence(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
     Node* createNodeSum(JNIEnv* env ,jobject jnode, jclass clazz, NodeFactory* factory);
+    std::list<Node*>* createChildren(JNIEnv* env ,jobject nodeObj, jclass nodeClass, NodeFactory* factory);
 
   };
 

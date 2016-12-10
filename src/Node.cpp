@@ -86,23 +86,21 @@ namespace jstk {
   class NodeSequence: public Node {
   private:
     int id;
-    std::list<Node*> nodes;
+    std::list<Node*>* nodes;
   
   public:
-    NodeSequence(int id, std::list<Node*> nodes_) {
+    NodeSequence(int id, std::list<Node*>* nodes) {
       this->id = id;
-      for (Node* n : nodes)
-        delete n;
-      nodes = nodes_;
+      this->nodes = nodes;
     }
     ~NodeSequence() {
       //printf("~NodeSequence\n");
-      for (Node* n : nodes)
+      for (Node* n : *nodes)
         delete n;
     }
     stk::StkFloat tick() {
       stk::StkFloat prod = 1.0;
-      for (Node* n : nodes) {
+      for (Node* n : *nodes) {
         prod *= n->tick();
       }
       return prod;
@@ -128,25 +126,22 @@ namespace jstk {
   
   private:
     int id;
-    std::list<Node*> nodes;
+    std::list<Node*>* nodes;
   
   public:
   
-    NodeSum(int id, std::list<Node*> nodes_) {
+    NodeSum(int id, std::list<Node*>* nodes) {
       this->id = id;
-      //printf("NodeSum\n");
-      for (Node* n : nodes)
-        delete n;
-      nodes = nodes_;
+      this->nodes = nodes;
     }
     ~NodeSum() {
       printf("~NodeSum\n");
-      for (Node* n : nodes)
+      for (Node* n : *nodes)
         delete n;
     }
     stk::StkFloat tick() {
       stk::StkFloat sum = 0.0;
-      for (Node* n : nodes) {
+      for (Node* n : *nodes) {
         sum += n->tick();
       }
       return sum;
@@ -161,7 +156,7 @@ namespace jstk {
     }
     void addNode(Node* node) {
       printf("addNode\n");
-      nodes.push_back(node);
+      nodes->push_back(node);
     }
     void setValue(int valueType, stk::StkFloat value) {
       printf("Could not set value for %d in NodeSum\n", valueType);
@@ -180,11 +175,11 @@ namespace jstk {
     Node* re = new NodeGain(id, gain);
     return re;
   }
-  Node* NodeFactory::nodeSequence(int id, std::list<Node*> nodes) {
+  Node* NodeFactory::nodeSequence(int id, std::list<Node*>* nodes) {
     Node* re = new NodeSequence(id, nodes);
     return re;
   }
-  Node* NodeFactory::nodeSum(int id, std::list<Node*> nodes) {
+  Node* NodeFactory::nodeSum(int id, std::list<Node*>* nodes) {
     Node* re = new NodeSum(id, nodes);
     return re;
   }

@@ -31,8 +31,8 @@ namespace jstk {
   public:
     Node* nodeSine(int id, stk::StkFloat frequency);
     Node* nodeGain(int id, stk::StkFloat gain);
-    Node* nodeSequence(int id, std::list<Node*> nodes);
-    Node* nodeSum(int id, std::list<Node*> nodes);
+    Node* nodeSequence(int id, std::list<Node*>* nodes);
+    Node* nodeSum(int id, std::list<Node*>* nodes);
   };
 }
 #endif
