@@ -48,7 +48,7 @@ public class JStk {
 		System.out.println("J setValue -> ");
 		jStk.setValue(0, 0, ValueType.FREQUENCY.ordinal(), 333);
 		System.out.println("J setValue <- ");
-		pause(1500);
+		pause(500);
 		System.out.println("J removeGraph -> ");
 		jStk.removeGraph(0);
 		System.out.println("J removeGraph <- ");
@@ -56,7 +56,7 @@ public class JStk {
 	}
 
 	static JStkNode createTestGraph() {
-		JStkNodeSine nsine = new JStkNodeSine(101, 1700.0);
+		JStkNodeSine nsine = new JStkNodeSine(101, 500.0);
 		JStkNodeGain ngain = new JStkNodeGain(102, 0.5);
 		List<JStkNode> li = Arrays.asList(nsine, ngain);
 		JStkNodeSequence nseq = new JStkNodeSequence(103, li);
