@@ -41,43 +41,48 @@ class Graph {
     }
 
     void tick() {
-      stk::StkFloat v = node->tick();
+      StkFloat v = node->tick();
       dac->tick(v);
     }
 };
 
+/**
+ * Holds graphs
+ */
+class GraphManager {
+  
+  private:
+    std::map<int, Graph*> graphs;
+
+  public:
+    void add(int id, Graph* graph) {
+      std::pair<std::map<int, Graph*>::iterator,bool> ret;
+      ret = graphs.insert (std::pair<int, Graph*>(id, graph));
+      if (ret.second==false) {
+        delete graph;
+        throw std::domain_error("Graph with the given id already existed");
+      } else {
+        printf("C addToGraphs %d\n", id);
+      }
+    }
+    
+    Graph* remove(int id) {
+      std::map<int, Graph*>::iterator it;
+      it = graphs.find(id);
+      if (it != graphs.end()) {
+        graphs.erase(it);
+        printf("C removeFromGraphs %d\n", id);
+        return it->second;
+      } else {
+        throw std::domain_error("No graph with the given id existed");
+      }
+    }
+};
+
+
 NodeFactory factory;
 NodeConverter conv;
-std::map<int, Graph*> graphs;
-
-/**
- * Utillity function for accessing 'map'
- */
-void addToGraphs(int id, Graph* graph) {
-  std::pair<std::map<int, Graph*>::iterator,bool> ret;
-  ret = graphs.insert (std::pair<int, Graph*>(id, graph));
-  if (ret.second==false) {
-    delete graph;
-    throw std::domain_error("Graph with the given id already existed");
-  } else {
-    printf("C addToGraphs %d\n", id);
-  }
-}
-
-/**
- * Utillity function for accessing 'map'
- */
-Graph* removeFromGraphs(int id) {
-  std::map<int, Graph*>::iterator it;
-  it = graphs.find(id);
-  if (it != graphs.end()) {
-    graphs.erase(it);
-    printf("C removeFromGraphs %d\n", id);
-    return it->second;
-  } else {
-    throw std::domain_error("No graph with the given id existed");
-  }
-}
+GraphManager graphManager;
 
 JNIEXPORT void JNICALL Java_JStk_addGraph
     (JNIEnv* env , jobject, jint graphId, jobject jgraph) {
@@ -87,7 +92,7 @@ JNIEXPORT void JNICALL Java_JStk_addGraph
 
     Node* node = conv.createNode(env, jgraph, &factory);
     Graph* graph = new Graph(graphId, node);
-    addToGraphs(graphId, graph);
+    graphManager.add(graphId, graph);
 
     while(graph->running) {
       graph->tick();
@@ -105,7 +110,7 @@ JNIEXPORT void JNICALL Java_JStk_removeGraph
   (JNIEnv *, jobject, jint graphId) {
   try {
     printf("C removeGraph %d\n", graphId);
-    Graph* graph = removeFromGraphs(graphId);
+    Graph* graph = graphManager.remove(graphId);
     graph->running = false;
     delete graph;
   } catch(std::exception& e) {
