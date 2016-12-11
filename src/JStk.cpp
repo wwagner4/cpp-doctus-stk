@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <list>
 #include <map>
+#include <string>
 #include <random>
 
 #include "Node.hpp"
@@ -57,9 +58,7 @@ void addToGraphs(int id, Graph* graph) {
   ret = graphs.insert (std::pair<int, Graph*>(id, graph));
   if (ret.second==false) {
     delete graph;
-    char* msg;
-    sprintf(msg, "ERROR: A graph with id %d already exists", id);
-    throw std::domain_error(msg);
+    throw std::domain_error("Graph with the given id already existed");
   } else {
     printf("C addToGraphs %d\n", id);
   }
@@ -76,9 +75,7 @@ Graph* removeFromGraphs(int id) {
     printf("C removeFromGraphs %d\n", id);
     return it->second;
   } else {
-    char* msg;
-    sprintf(msg, "No graph with id %d existed", id);
-    throw std::domain_error(msg);
+    throw std::domain_error("No graph with the given id existed");
   }
 }
 
