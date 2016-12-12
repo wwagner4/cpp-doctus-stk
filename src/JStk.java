@@ -41,31 +41,25 @@ public class JStk {
 
 	public static void main(String... args) {
 		IJStk jStk = create();
-		JStkNode g = createTestGraph();
-		System.out.println("J addGraph ->");
-		jStk.addGraph(0, g);
-		System.out.println("J addGraph <- ");
-		System.out.println("J setValue -> ");
-		jStk.setValue(0, 0, ValueType.FREQUENCY.ordinal(), 333);
-		System.out.println("J setValue <- ");
-		pause(500);
-		System.out.println("J removeGraph -> ");
-		jStk.removeGraph(0);
-		System.out.println("J removeGraph <- ");
+		{
+			JStkNode g = createTestGraph(800);
+			System.out.println("J addGraph ->");
+			jStk.addGraph(0, g);
+			System.out.println("J addGraph <- ");
+			pause(500);
+			System.out.println("J removeGraph -> ");
+			jStk.removeGraph(0);
+			System.out.println("J removeGraph <- ");
+		}
 		jStk.shutdown();
 	}
 
-	static JStkNode createTestGraph() {
-		JStkNodeSine nsine = new JStkNodeSine(101, 500.0);
+	static JStkNode createTestGraph(double freq) {
+		JStkNodeSine nsine = new JStkNodeSine(101, freq);
 		JStkNodeGain ngain = new JStkNodeGain(102, 0.5);
 		List<JStkNode> li = Arrays.asList(nsine, ngain);
 		JStkNodeSequence nseq = new JStkNodeSequence(103, li);
 		return nseq;
-	}
-
-	static JStkNode createTestGraph1() {
-		JStkNodeSine n = new JStkNodeSine(101, 500.0);
-		return n;
 	}
 
 	static void pause(int ms) {

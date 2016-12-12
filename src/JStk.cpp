@@ -61,9 +61,7 @@ class GraphManager {
       if (ret.second==false) {
         delete graph;
         throw std::domain_error("Graph with the given id already existed");
-      } else {
-        printf("C addToGraphs %d\n", id);
-      }
+      } 
     }
     
     Graph* remove(int id) {
@@ -71,7 +69,6 @@ class GraphManager {
       it = graphs.find(id);
       if (it != graphs.end()) {
         graphs.erase(it);
-        printf("C removeFromGraphs %d\n", id);
         return it->second;
       } else {
         throw std::domain_error("No graph with the given id existed");
