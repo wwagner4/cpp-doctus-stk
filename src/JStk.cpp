@@ -63,11 +63,8 @@ class GraphManager {
     }
 
     void add(int id, Graph* graph) {
-      printf("C GraphManager add %d %p\n", id, graph);
       std::pair<std::map<int, Graph*>::iterator,bool> ret;
-      printf("C GraphManager add created ret\n");
       ret = graphs->insert (std::pair<int, Graph*>(id, graph));
-      printf("C GraphManager add inserted\n");
       if (ret.second==false) {
         delete graph;
         throw std::domain_error("Graph with the given id already existed");
@@ -75,13 +72,10 @@ class GraphManager {
     }
     
     Graph* remove(int id) {
-      printf("C GraphManager remove %d\n", id);
       std::map<int, Graph*>::iterator it;
       it = graphs->find(id);
-      printf("C GraphManager remove found iterator %p\n", &it);
       if (it != graphs->end()) {
         graphs->erase(it);
-        printf("C GraphManager remove erased\n");
         return it->second;
       } else {
         throw std::domain_error("No graph with the given id existed");
@@ -115,41 +109,31 @@ GraphManager* graphManager = nullptr;
 
 JNIEXPORT void JNICALL Java_JStk_start
 	(JNIEnv *, jobject) {
-	printf("C start\n");
 	graphManager = new GraphManager();
-	printf("C created GraphManager\n");
 	graphManager->started = true;
 	while(graphManager->started) {
 		graphManager->tick();
 	}
-	printf("C start ended\n");
 }
 
 JNIEXPORT void JNICALL Java_JStk_stop
   (JNIEnv *, jobject) {
-	printf("C stop\n");
 	while(graphManager->hasRunningGraphs()) {
 		  usleep(100000);
 	}
 	usleep(100000);
 	graphManager->started = false;
-	printf("C stop graphManager started = false\n");
 	delete graphManager;
-	printf("C stop graphManager deleted\n");
 }
 
 JNIEXPORT void JNICALL Java_JStk_addGraph
     (JNIEnv* env , jobject, jint graphId, jobject jgraph) {
   try {
-    printf("C addGraph %d %p\n", graphId, jgraph);
     Stk::showWarnings(true);
 
     Node* node = conv.createNode(env, jgraph, &factory);
-    printf("C addGraph created node\n");
     Graph* graph = new Graph(graphId, node);
-    printf("C addGraph created graph\n");
     graphManager->add(graphId, graph);
-    printf("C addGraph added graph %d\n", graphId);
 
   } catch(std::exception& e) {
     printf("ERROR: %s in 'Java_JStk_addGraph'\n", e.what());
@@ -163,12 +147,9 @@ JNIEXPORT void JNICALL Java_JStk_addGraph
 JNIEXPORT void JNICALL Java_JStk_removeGraph
   (JNIEnv *, jobject, jint graphId) {
   try {
-    printf("C removeGraph %d\n", graphId);
     Graph* graph = graphManager->remove(graphId);
-    printf("C removeGraph found graph to remove %d %p\n", graphId, graph);
     graph->running = false;
-    printf("C removeGraph set running to false %d\n", graphId);
-    //delete graph;
+    delete graph;
   } catch(std::exception& e) {
     printf("ERROR: %s in 'Java_JStk_removeGraph'\n'", e.what());
     exit(-1);

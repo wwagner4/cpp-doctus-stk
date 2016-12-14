@@ -77,14 +77,14 @@ public class JStk {
 
 	static void playNote(IJStk jStk, int id, double freq) {
 		JStkNode g = createTestGraph(freq);
-		System.out.println("J addGraph ->");
+		System.out.println("J addGraph -> " + id);
 		jStk.addGraph(id, g);
-		System.out.println("J addGraph <- ");
+		System.out.println("J addGraph <- " + id);
 		int dur = 20 + ran.nextInt(5000);
 		pause(dur);
-		System.out.println("J removeGraph -> ");
+		System.out.println("J removeGraph -> " + id);
 		jStk.removeGraph(id);
-		System.out.println("J removeGraph <- ");
+		System.out.println("J removeGraph <- " + id);
 	}
 	
 	
