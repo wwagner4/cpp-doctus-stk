@@ -10,8 +10,10 @@ public class SlopeTryout {
 
 		// linearSlopeValues();
 		ScheduledExecutorService es = Executors.newScheduledThreadPool(20);
-		es.scheduleAtFixedRate(() -> System.out.printf("!!\n"), 0, 500, TimeUnit.MILLISECONDS);
-		pause(2000);
+		long periode = Double.valueOf(1000000.0 / ISlope.FRAME_RATE).longValue();
+		System.out.printf("periode: %d micros\n", periode);
+		es.scheduleAtFixedRate(() -> System.out.printf("!!\n"), 0, periode, TimeUnit.MICROSECONDS);
+		pause(100);
 		es.shutdown();
 	}
 
