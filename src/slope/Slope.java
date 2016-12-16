@@ -6,8 +6,8 @@ public class Slope {
 		BEFORE_START, STARTED, STOPPED, AFTER_STOPPED
 	}
 
-	ISlope linear(double duration, double from, double to) {
-		final double delta = (to - from) * ISlope.FRAME_RATE / duration;
+	public ISlope linear(double duration, double from, double to) {
+		final double delta = (to - from)  / (duration * ISlope.FRAME_RATE);
 		return new ISlope() {
 
 			private State state = State.BEFORE_START;
@@ -42,7 +42,7 @@ public class Slope {
 						throw new IllegalStateException("Unknown state: " + state);
 					}
 				} else {
-					return val;
+					return to;
 				}
 			}
 
