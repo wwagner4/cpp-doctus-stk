@@ -33,7 +33,11 @@ public class Slope {
 						return val;
 					case STARTED:
 						val += delta;
-						return val;
+						if (delta < 0) {
+							return Math.max(val, to);
+						} else {
+							return Math.min(val, to);
+						}
 					case STOPPED:
 						return val;
 					case AFTER_STOPPED:
