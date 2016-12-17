@@ -11,14 +11,15 @@ public class SlopeTryout {
 	public static void main(String[] args) {
 		ScheduledExecutorService es  = Executors.newScheduledThreadPool(20);
 		
-		TParam p = new TParam();
+		TParam p = new TParam(-10);
 		ParamExec e = new ParamExec(p);
 		
-		ISlope s = Slope.linear(0.1, () -> p.getValue(), 100);
+		ISlope s = Slope.linear(0.05, () -> p.getValue(), 10);
 		e.runSlope(s, es);
-		pause(50);
+		pause(10);
 		s.start();
-		pause(150);
+		System.out.println("-- started");
+		pause(100);
 		
 		es.shutdown();
 		
@@ -143,7 +144,11 @@ interface Param {
 
 class TParam implements Param {
 
-	double v = 0.0;
+	double v;
+	
+	public TParam(double v) {
+		this.v = v;
+	}
 
 	@Override
 	public void setValue(double v) {
