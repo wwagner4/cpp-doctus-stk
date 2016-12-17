@@ -89,7 +89,8 @@ public class SlopeTryout {
 	static void runExec() {
 		ScheduledExecutorService es  = Executors.newScheduledThreadPool(20);
 		
-		runExecOneSlope(es);
+//		runExecOneSlope(es);
+		runExecTwoSlope(es);
 		
 		es.shutdown();
 	}
@@ -102,6 +103,23 @@ public class SlopeTryout {
 		pause(20);
 		e.start();
 		System.out.println("-- started");
+		pause(80);
+	}
+
+	static void runExecTwoSlope(ScheduledExecutorService es) {
+		Param p = new TParam((double) 0);
+		ParamExec e = new ParamExec(p);
+		
+		e.runSlope(0.04877, 100, (d, f, t) -> Slope.linear(d, f, t), es);
+		pause(10);
+		e.start();
+		System.out.println("-- started 01");
+		pause(60);
+		e.runSlope(0.02324, 00, (d, f, t) -> Slope.linear(d, f, t), es);
+		pause(20);
+		e.start();
+		System.out.println("-- started 02");
+
 		pause(80);
 	}
 
@@ -134,6 +152,11 @@ class ParamExec {
 	}
 
 	public void runSlope(double duration, double to, ISlopeFactory slopeFactory, ScheduledExecutorService es) {
+		
+		process.ifPresent(p -> {
+			p.cancel(true);
+			System.out.println("-- cancelled process");
+		});
 		
 		slope = Optional.of(slopeFactory.slope(duration, param.getValue(), to));
 
