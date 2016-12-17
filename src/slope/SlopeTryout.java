@@ -89,22 +89,20 @@ public class SlopeTryout {
 	static void runExec() {
 		ScheduledExecutorService es  = Executors.newScheduledThreadPool(20);
 		
-		ParamExec e = createExec(-10);
-		
-		SlopeFactoryLinear sf = new SlopeFactoryLinear(0.04, 10);
-		e.runSlope(sf, es);
-		pause(30);
-		e.start();
-		System.out.println("-- started");
-		pause(50);
+		runExecOneSlope(es);
 		
 		es.shutdown();
 	}
 
-	private static ParamExec createExec(double paramValue) {
-		TParam p = new TParam(paramValue);
+	static void runExecOneSlope(ScheduledExecutorService es) {
+		Param p = new TParam((double) 0);
 		ParamExec e = new ParamExec(p);
-		return e;
+		
+		e.runSlope(0.04877, 100, (d, f, t) -> Slope.linear(d, f, t), es);
+		pause(20);
+		e.start();
+		System.out.println("-- started");
+		pause(80);
 	}
 
 	private static void pause(int milis) {
@@ -115,24 +113,6 @@ public class SlopeTryout {
 		}
 	}
 
-}
-
-class SlopeFactoryLinear implements ISlopeFactory {
-	
-	private double duration;
-	private double to;
-	
-	SlopeFactoryLinear(double duration, double to) {
-		super();
-		this.duration = duration;
-		this.to = to;
-	}
-
-	@Override
-	public ISlope slope(double from) {
-		return Slope.linear(duration, from, to);
-	}
-	
 }
 
 class ParamExec {
@@ -153,9 +133,9 @@ class ParamExec {
 		slope.ifPresent(s -> s.start());
 	}
 
-	public void runSlope(ISlopeFactory slopeFactory, ScheduledExecutorService es) {
+	public void runSlope(double duration, double to, ISlopeFactory slopeFactory, ScheduledExecutorService es) {
 		
-		slope = Optional.of(slopeFactory.slope(param.getValue()));
+		slope = Optional.of(slopeFactory.slope(duration, param.getValue(), to));
 
 		Runnable run = new Runnable() {
 
