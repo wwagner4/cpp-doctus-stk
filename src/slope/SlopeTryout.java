@@ -9,36 +9,11 @@ import java.util.concurrent.TimeUnit;
 public class SlopeTryout {
 
 	public static void main(String[] args) {
-		ScheduledExecutorService es  = Executors.newScheduledThreadPool(20);
-		
-		ParamExec e = createExec();
-		
-		ISlope s = Slope.linear(0.05, 0.0, 10);
-		e.runSlope(s, es);
-		pause(10);
-		s.start();
-		System.out.println("-- started");
-		pause(100);
-		
-		es.shutdown();
+		runExec();
 		
 	}
 
-	static ParamExec createExec() {
-		TParam p = new TParam(-10);
-		ParamExec e = new ParamExec(p);
-		return e;
-	}
-
-	private static void pause(int milis) {
-		try {
-			Thread.sleep(milis);
-		} catch (InterruptedException e) {
-			// Nothing to do here
-		}
-	}
-
-	static void linearSlopeValues() {
+	static void runLinearSlopeValues() {
 		{
 			System.out.printf("-- Ascending slope in 20 steps\n");
 			ISlope ls = Slope.linear(0.1, 10.0, 20);
@@ -111,6 +86,51 @@ public class SlopeTryout {
 		}
 	}
 
+	static void runExec() {
+		ScheduledExecutorService es  = Executors.newScheduledThreadPool(20);
+		
+//		runExecOneSlope(es);
+		runExecTwoSlope(es);
+		
+		es.shutdown();
+	}
+
+	static void runExecOneSlope(ScheduledExecutorService es) {
+		Param p = new TParam((double) 0);
+		ParamExec e = new ParamExec(p);
+		
+		e.runSlope(0.04877, 100, (d, f, t) -> Slope.linear(d, f, t), es);
+		pause(20);
+		e.start();
+		System.out.println("-- started");
+		pause(80);
+	}
+
+	static void runExecTwoSlope(ScheduledExecutorService es) {
+		Param p = new TParam((double) 0);
+		ParamExec e = new ParamExec(p);
+		
+		e.runSlope(0.04877, 100, (d, f, t) -> Slope.linear(d, f, t), es);
+		pause(10);
+		e.start();
+		System.out.println("-- started 01");
+		pause(60);
+		e.runSlope(0.02324, 00, (d, f, t) -> Slope.linear(d, f, t), es);
+		pause(20);
+		e.start();
+		System.out.println("-- started 02");
+
+		pause(80);
+	}
+
+	private static void pause(int milis) {
+		try {
+			Thread.sleep(milis);
+		} catch (InterruptedException e) {
+			// Nothing to do here
+		}
+	}
+
 }
 
 class ParamExec {
@@ -118,6 +138,8 @@ class ParamExec {
 	long periode = Double.valueOf(1000000.0 / ISlope.FRAME_RATE).longValue();
 
 	private Param param;
+	
+	Optional<ISlope> slope = Optional.empty();
 
 	Optional<ScheduledFuture<?>> process = Optional.empty();
 
@@ -125,13 +147,24 @@ class ParamExec {
 		this.param = param;
 	}
 
-	public void runSlope(ISlope slope, ScheduledExecutorService es) {
+	public void start() {
+		slope.ifPresent(s -> s.start());
+	}
+
+	public void runSlope(double duration, double to, ISlopeFactory slopeFactory, ScheduledExecutorService es) {
+		
+		process.ifPresent(p -> {
+			p.cancel(true);
+			System.out.println("-- cancelled process");
+		});
+		
+		slope = Optional.of(slopeFactory.slope(duration, param.getValue(), to));
 
 		Runnable run = new Runnable() {
 
 			@Override
 			public void run() {
-				param.setValue(slope.nextVal());
+				slope.ifPresent(s -> param.setValue(s.nextVal()));
 			}
 
 		};
