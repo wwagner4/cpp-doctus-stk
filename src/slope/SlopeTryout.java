@@ -14,7 +14,7 @@ public class SlopeTryout {
 		TParam p = new TParam();
 		ParamExec e = new ParamExec(p);
 		
-		ISlope s = Slope.linear(0.1, 0, 100);
+		ISlope s = Slope.linear(0.1, () -> p.getValue(), 100);
 		e.runSlope(s, es);
 		pause(50);
 		s.start();
@@ -35,7 +35,7 @@ public class SlopeTryout {
 	static void linearSlopeValues() {
 		{
 			System.out.printf("-- Ascending slope in 20 steps\n");
-			ISlope ls = Slope.linear(0.1, 10, 20);
+			ISlope ls = Slope.linear(0.1, () -> 10.0, 20);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
@@ -52,7 +52,7 @@ public class SlopeTryout {
 		}
 		{
 			System.out.printf("-- Descending slope in 20 steps\n");
-			ISlope ls = Slope.linear(0.1, 200, 0);
+			ISlope ls = Slope.linear(0.1, () -> 200.0, 0);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
@@ -74,7 +74,7 @@ public class SlopeTryout {
 			double fl = 1.0 / ISlope.FRAME_RATE;
 			System.out.printf("-- FrameLength %5.2f seconds\n", fl);
 
-			ISlope ls = Slope.linear(fl * 0.9, 10, 20);
+			ISlope ls = Slope.linear(fl * 0.9, ()-> 10., 20);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
@@ -91,7 +91,7 @@ public class SlopeTryout {
 			double fl = 1.0 / ISlope.FRAME_RATE;
 			System.out.printf("-- FrameLength %5.2f seconds\n", fl);
 
-			ISlope ls = Slope.linear(fl * 0.1, 100, -20);
+			ISlope ls = Slope.linear(fl * 0.1, ()->100., -20);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
