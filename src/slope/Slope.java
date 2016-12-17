@@ -2,11 +2,14 @@ package slope;
 
 public class Slope {
 
+	private Slope() {
+	}
+	
 	enum State {
 		BEFORE_START, STARTED, STOPPED, AFTER_STOPPED
 	}
 
-	public ISlope linear(double duration, double from, double to) {
+	public static ISlope linear(double duration, double from, double to) {
 		final double delta = (to - from)  / (duration * ISlope.FRAME_RATE);
 		return new ISlope() {
 
