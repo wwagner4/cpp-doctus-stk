@@ -1,7 +1,5 @@
 package slope;
 
-import java.util.function.Supplier;
-
 public class Slope {
 
 	private Slope() {
@@ -11,12 +9,12 @@ public class Slope {
 		BEFORE_START, STARTED, STOPPED, AFTER_STOPPED
 	}
 
-	public static ISlope linear(double duration, Supplier<Double> from, double to) {
-		final double delta = (to - from.get())  / (duration * ISlope.FRAME_RATE);
+	public static ISlope linear(double duration, double from, double to) {
+		final double delta = (to - from)  / (duration * ISlope.FRAME_RATE);
 		return new ISlope() {
 
 			private State state = State.BEFORE_START;
-			private double val = from.get();
+			private double val = from;
 
 			@Override
 			public void start() {

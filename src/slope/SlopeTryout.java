@@ -11,10 +11,9 @@ public class SlopeTryout {
 	public static void main(String[] args) {
 		ScheduledExecutorService es  = Executors.newScheduledThreadPool(20);
 		
-		TParam p = new TParam(-10);
-		ParamExec e = new ParamExec(p);
+		ParamExec e = createExec();
 		
-		ISlope s = Slope.linear(0.05, () -> p.getValue(), 10);
+		ISlope s = Slope.linear(0.05, 0.0, 10);
 		e.runSlope(s, es);
 		pause(10);
 		s.start();
@@ -23,6 +22,12 @@ public class SlopeTryout {
 		
 		es.shutdown();
 		
+	}
+
+	static ParamExec createExec() {
+		TParam p = new TParam(-10);
+		ParamExec e = new ParamExec(p);
+		return e;
 	}
 
 	private static void pause(int milis) {
@@ -36,7 +41,7 @@ public class SlopeTryout {
 	static void linearSlopeValues() {
 		{
 			System.out.printf("-- Ascending slope in 20 steps\n");
-			ISlope ls = Slope.linear(0.1, () -> 10.0, 20);
+			ISlope ls = Slope.linear(0.1, 10.0, 20);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
@@ -53,7 +58,7 @@ public class SlopeTryout {
 		}
 		{
 			System.out.printf("-- Descending slope in 20 steps\n");
-			ISlope ls = Slope.linear(0.1, () -> 200.0, 0);
+			ISlope ls = Slope.linear(0.1, 200.0, 0);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
@@ -75,7 +80,7 @@ public class SlopeTryout {
 			double fl = 1.0 / ISlope.FRAME_RATE;
 			System.out.printf("-- FrameLength %5.2f seconds\n", fl);
 
-			ISlope ls = Slope.linear(fl * 0.9, ()-> 10., 20);
+			ISlope ls = Slope.linear(fl * 0.9, 10., 20);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
@@ -92,7 +97,7 @@ public class SlopeTryout {
 			double fl = 1.0 / ISlope.FRAME_RATE;
 			System.out.printf("-- FrameLength %5.2f seconds\n", fl);
 
-			ISlope ls = Slope.linear(fl * 0.1, ()->100., -20);
+			ISlope ls = Slope.linear(fl * 0.1, 100., -20);
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
 			System.out.printf("BS %5.2f\n", ls.nextVal());
